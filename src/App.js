@@ -1,25 +1,26 @@
 import { useState } from 'react';                        //Función propia de react que permite "recordar" en este caso los click
 
 function Square({ value, onSquareClick }) {              //Esta es la función para detectar cuando se toca un cuadrado
-  return (
-    <button className="square" onClick={onSquareClick}>
+  return (                                               //La función OnSquareClick va a pasar hacia la función board para detectar cuando se ha hecho un click
+    <button className="square" onClick={onSquareClick}> 
       {value}
-    </button>
-  );
+    </button>                                             //Para no pintar la palabra explicita valor se le ponen las llaves y lo deja vacio
+  );                                                      //Esto para se usa en JSX para especificar que es un prop
 }
 
-function Board({ xIsNext, squares, onPlay }) {
-  function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
+function Board({ xIsNext, squares, onPlay }) {        //xIsNext es una función booleana que por defecto es verdadero, pero cuando cuando se usa la función...
+  function handleClick(i) {                         //handleClick este cambia de valor para dar paso al otro jugador en este caso la O, la i que tiene la función...
+                                                    //en este caso en board se llama a la función cuadrados y onPlay
+    if (calculateWinner(squares) || squares[i]) {   //Esta es una función que detecta 2 cosas si un jugador a ganado o si un jugador ha hecho click
       return;
     }
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
+    const nextSquares = squares.slice();         //Crea una copia de la matriz de cuadrados y este puede agregar las x cuando la función handleClick es usada.
+    if (xIsNext) {                             //Este es un ciclo el cual dice que X es el siguiente pinte X sino este pinte O...
+      nextSquares[i] = 'X';                    //esto ya que xIsNext es booleano true por default cuando se activa el handleClick y cambia si...
+    } else {                                    //este ha sido presionado cambia a False y pinte las O.
       nextSquares[i] = 'O';
     }
-    onPlay(nextSquares);
+    onPlay(nextSquares);                        //Esta función hace que el Board se pueda actualizar cuando se hace click, simplemente para reiniciar el juego
   }
 
   const winner = calculateWinner(squares);
