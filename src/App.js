@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState } from 'react';                        //Función propia de react que permite "recordar" en este caso los click
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick }) {              //Esta es la función para detectar cuando se toca un cuadrado
   return (
     <button className="square" onClick={onSquareClick}>
       {value}
