@@ -23,18 +23,25 @@ function Board({ xIsNext, squares, onPlay }) {        //xIsNext es una función 
     onPlay(nextSquares);                        //Esta función hace que el Board se pueda actualizar cuando se hace click, simplemente para reiniciar el juego
   }
 
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = 'Winner: ' + winner;
+  const winner = calculateWinner(squares);      //Se define la variable ganador o el siguiente jugador esta es igual a la función para detectar ganador
+  let status;                                  //Se defina la varible status para saber el status de ganador
+  if (winner) {                                //Luego tenemos un if el cual dice si que si el status del juego es ganador pone el jugador que gano 
+    status = 'Winner: ' + winner;             //Sino solo se pone el siguiente jugador en este caso puede ser X o O recordando que la función XIsNext es booleano
   } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O');   //Todo esto se pone en la variable de status
   }
 
-  return (
+  return (   
+    /*Se agrega encima del board el status que es un label que cambian con la función handleClick con el if de ganador o el turno del jugador.
+    
+    Para los cuadrados se usa la función OnSquareClick que sabe cuando es presionado pero se le agrega 
+    una función de flecha la que ayuda que no exista un conflicto este conflicto es por la función handleClick que es la que pinta las "X" 
+    en este caso solo se ejecutará la función handleClick cuando está se tocada como ejemplo: se presiona el square 3 solo se ejecutará 
+    la función en este cuadrado.
+    */
     <>
-      <div className="status">{status}</div>
-      <div className="board-row">
+      <div className="status">{status}</div>              
+      <div className="board-row"> 
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
         <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
