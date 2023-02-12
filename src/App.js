@@ -33,7 +33,7 @@ function Board({ xIsNext, squares, onPlay }) {        //xIsNext es una función 
 
   return (   
     /*Se agrega encima del board el status que es un label que cambian con la función handleClick con el if de ganador o el turno del jugador.
-    
+
     Para los cuadrados se usa la función OnSquareClick que sabe cuando es presionado pero se le agrega 
     una función de flecha la que ayuda que no exista un conflicto este conflicto es por la función handleClick que es la que pinta las "X" 
     en este caso solo se ejecutará la función handleClick cuando está se tocada como ejemplo: se presiona el square 3 solo se ejecutará 
@@ -60,30 +60,33 @@ function Board({ xIsNext, squares, onPlay }) {        //xIsNext es una función 
   );
 }
 
-export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+export default function Game() {                                        //Se creo la función juego la cual sustituye a la función board ya que ahora...
+  const [history, setHistory] = useState([Array(9).fill(null)]);       //Constante historia la cual cuenta tiene en cuenta los movimientos del array 
+  const [currentMove, setCurrentMove] = useState(0);                    //Constante que realiza un seguimiento de que paso esta viendo el usuario
+  const xIsNext = currentMove % 2 === 0;                               //currentMove se encarga de determinar el valor de xIsNext
+  const currentSquares = history[currentMove];                          //Se muestra el movimiento actual al que se regreso y no muestra los demas
 
-  function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
+  function handlePlay(nextSquares) {                                   //Se agrega una nueva función llamada handlePlay este llama al board para actualizar el juego
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];    //Esta parte cuando regresas al movimiento anterior, eliminará el resto de la historia...
+    setHistory(nextHistory);                                                   //solo dejará hasta el movimiento en que te quedaste
     setCurrentMove(nextHistory.length - 1);
   }
 
   function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
+    setCurrentMove(nextMove);                               //Detecta si el siguiente movimiento es par o impar en palabras más sencillas true o false
   }
 
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
+  const moves = history.map((squares, move) => {          //Se crea la variable moves que es igual a la historia del mapa o el board mediante cuadros y movimientos
+    let description;                                     //Luego se define la variable description
+    if (move > 0) {                                       //Dice si el movimiento es mayor de 0
+      description = 'Go to move #' + move;               //la descripción dice que el movimiento es el numero del movimiento
     } else {
-      description = 'Go to game start';
+      description = 'Go to game start';                //Sino la descripción dice que el jeugo debe de inciar
     }
     return (
+      /*Esto regresa la lista de movimientos que se han hecho; la key se usa para solucionar un error
+      Cuando se le da al botón se regresa al moviento hecho en ese momento
+      */
       <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
       </li>
@@ -91,6 +94,8 @@ export default function Game() {
   });
 
   return (
+    /* el board llama a las funciones xIsNext,squares y handlePlay hacia la función board
+    el moves ingresan los movientos en una lista de puntos en los que los puedes vizualizar como botones*/
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
@@ -102,9 +107,9 @@ export default function Game() {
   );
 }
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
+function calculateWinner(squares) {             //Esta es una función que toma una matriz de 9 como nuestro tablero y busca un ganador...
+  const lines = [                              //este puede devolver X, O o Un valor nulo, esto con un ciclo for recorre el largo de las...
+    [0, 1, 2],                                //filas si detecta que son tres en raya de algun jugador devuelve un ganador o nulo en caso de empate. 
     [3, 4, 5],
     [6, 7, 8],
     [0, 3, 6],
